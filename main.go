@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"link-adviser/clients/telegram"
 	"log"
 )
 
@@ -11,7 +10,7 @@ const (
 )
 
 func main() {
-	tgClient := telegram.New(tgBotHost, mustToken())
+	// tgClient := telegram.New(tgBotHost, mustToken())
 
 	// fetcher = fetcher.New()
 
