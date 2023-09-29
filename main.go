@@ -2,21 +2,31 @@ package main
 
 import (
 	"flag"
+	tgClient "link-adviser/clients/telegram"
+	event_consumer "link-adviser/consumer/event-consumer"
+	"link-adviser/events/telegram"
+	"link-adviser/storage/files"
 	"log"
 )
 
 const (
-	tgBotHost = "api.telegram.org"
+	tgBotHost   = "api.telegram.org"
+	storagePath = "storage"
+	batchSize   = 100
 )
 
 func main() {
-	// tgClient := telegram.New(tgBotHost, mustToken())
+	eventsProcessor := telegram.New(
+		tgClient.New(tgBotHost, mustToken()),
+		files.New(storagePath))
 
-	// fetcher = fetcher.New()
+	log.Print("service started")
 
-	// processor = processor.New()
+	consumer := event_consumer.New(eventsProcessor, eventsProcessor, batchSize)
 
-	// consumer.Start(fetcher, processor)
+	if err := consumer.Start(); err != nil {
+		log.Fatal("service is stopped", err)
+	}
 }
 
 func mustToken() string {
